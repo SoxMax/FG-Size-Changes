@@ -70,11 +70,14 @@ end
 
 local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
     if rRoll.sType == "damage" then
-        local tEffects, nEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags);
-        Debug.chat(nEffectCount, tEffects)
-        if nEffectCount > 0 then
+        local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags);
+        local tWeapSizeEffects, nWeapSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "WSIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags);
+        if nSizeEffectCount > 0 or nWeapSizeEffectCount > 0 then
             local sizeChange = 0
-            for _,effect in pairs(tEffects) do
+            for _,effect in pairs(tSizeEffects) do
+                sizeChange = sizeChange + effect.mod
+            end
+            for _,effect in pairs(tWeapSizeEffects) do
                 sizeChange = sizeChange + effect.mod
             end
             if sizeChange ~= 0 and #(rRoll.clauses) > 0 then
