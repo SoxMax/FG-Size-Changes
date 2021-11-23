@@ -4,7 +4,7 @@ Extension for Fantasy Grounds' Pathfinder ruleset that adds a effects for manipu
 | Modifier | Value | Descriptors      | Notes                 |
 | -------- |:------| :----------------|:----------------------|
 | SIZE     | (N)   | [bonus], [range] | Size change           |
-| WSIZE    | (N)   | [bonus], [range] | Effective Size Change |
+| ESIZE    | (N)   | [bonus], [range] | Effective Size Change |
 
 **(N)** = Only numbers supported for value attribute
 
@@ -14,5 +14,5 @@ Extension for Fantasy Grounds' Pathfinder ruleset that adds a effects for manipu
 ## Examples
 - Enlarge Person; SIZE: 1 size, melee
 - Reduce Person; SIZE: -1 size, melee
-- Lead Blades; WSIZE: 1 size, melee
-- Gravity Bow; WSIZE: 1 size, ranged
+- Lead Blades; ESIZE: 1 size, melee
+- Gravity Bow; ESIZE: 1 size, ranged
