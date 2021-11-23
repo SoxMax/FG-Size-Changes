@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<root version="3.3">
+	<properties>
+		<name>Feature: Size Changes</name>
+		<version>1.0.0</version>
+		<author>SoxMax</author>
+		<description>Allows you to see what your stats are with effects applied</description>
+		<loadorder>402</loadorder>
+		<ruleset>
+			<name>3.5E</name>
+		</ruleset>
+		<ruleset>
+			<name>PFRPG</name>
+		</ruleset>
+	</properties>
+	
+	<announcement text="https://github.com/SoxMax/FG-Size-Changes \r Size Changes v1.0.0 \r Automation for size increases and decreases" font="emotefont" />
+	
+	<base>
+		<!-- Scripts -->
+		<script name="SizeChanges" file="scripts/size_changes.lua" />
+	</base>
+</root>
