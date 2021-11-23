@@ -69,8 +69,9 @@ local function getSourceSize(rSource)
 end
 
 local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
-    if rRoll.sType == "damage" and rRoll.range == "M" then
+    if rRoll.sType == "damage" then
         local tEffects, nEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags);
+        Debug.chat(nEffectCount, tEffects)
         if nEffectCount > 0 then
             local sizeChange = 0
             for _,effect in pairs(tEffects) do
