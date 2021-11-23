@@ -100,14 +100,14 @@ local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
                         else
                             progressionIndex = progressionIndex + 2
                         end
-                        sizeIndex = sizeChange + 1
+                        sizeIndex = sizeIndex + 1
                     else
                         if progressionIndex <= 6 or sizeIndex <= 5 then
                             progressionIndex = progressionIndex - 1
                         else
                             progressionIndex = progressionIndex - 2
                         end
-                        sizeIndex = sizeChange - 1
+                        sizeIndex = sizeIndex - 1
                     end
                 end
                 local newDice = convertDiceStringToArray(diceProgression[progressionIndex])
