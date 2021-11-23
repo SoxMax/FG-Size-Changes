@@ -2,8 +2,8 @@ local diceProgression = {"1d1", "1d2", "1d3", "1d4", "1d6", "1d8", "1d10", "2d6"
 local smallSizes = {"Fine", "Diminutive", "Tiny", "Small"}
 
 local function dieSplit(die)
-    local _, _, dieCount, dieSize = die:find("^(%d*)d(%d+)$")
-    return tonumber(dieCount) or 1, tonumber(dieSize) or 1
+    local dieCount, dieSides = die:match("(%d*)d(%d+)")
+    return tonumber(dieCount) or 1, tonumber(dieSides) or 1
 end
 
 local function transformSpecialDice(die)
