@@ -60,7 +60,7 @@ end
 local function getSourceSize(rSource)
     local type = DB.getValue(DB.findNode(rSource.sCTNode), "type", ""):lower()
     if type ~= "" then
-        for index,size in smallSizes do
+        for index,size in ipairs(smallSizes) do
             if type:find(size, 1, true) then
                 return index, size
             end
@@ -70,7 +70,7 @@ end
 
 local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
     if rRoll.sType == "damage" and rRoll.range == "M" then
-        local tEffects, nEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, rRoll.tAttackFilter, rTarget);
+        local tEffects, nEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags);
         if nEffectCount > 0 then
             local sizeChange = 0
             for _,effect in pairs(tEffects) do
