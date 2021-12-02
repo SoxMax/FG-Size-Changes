@@ -56,17 +56,6 @@ local function updateDiceArray(rRoll)
     rRoll.aDice = aDice
 end
 
-local function getSourceSize(rSource)
-    local type = DB.getValue(DB.findNode(rSource.sCTNode), "type", ""):lower()
-    if type ~= "" then
-        for index,size in ipairs(SizeChangeData.sizes) do
-            if type:find(size, 1, true) then
-                return index, size
-            end
-        end
-    end
-end
-
 local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
     if rRoll.sType == "damage" then
         local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags)
@@ -87,7 +76,7 @@ local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
                     diceString = diceCount .. dice[1]
                 end
                 diceString = transformSpecialDice(diceString)
-                local sizeIndex = getSourceSize(rSource)
+                local sizeIndex = SizeChangeCommon.getActorSize(rSource)
                 local progressionIndex = nil
                 for i = 1, math.abs(sizeChange), 1 do
                     if progressionIndex == nil then
