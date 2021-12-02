@@ -1,5 +1,4 @@
 local diceProgression = {"1d1", "1d2", "1d3", "1d4", "1d6", "1d8", "1d10", "2d6", "2d8", "3d6", "3d8", "4d6", "4d8", "6d6", "6d8", "8d6", "8d8", "12d6", "12d8", "16d6"}
-local smallSizes = {"fine", "diminutive", "tiny", "small", "medium", "large", "huge", "gargantuan", "colossal"}
 
 local function dieSplit(die)
     local dieCount, dieSides = die:match("(%d*)d(%d+)")
@@ -60,7 +59,7 @@ end
 local function getSourceSize(rSource)
     local type = DB.getValue(DB.findNode(rSource.sCTNode), "type", ""):lower()
     if type ~= "" then
-        for index,size in ipairs(smallSizes) do
+        for index,size in ipairs(SizeChangeData.smallSizes) do
             if type:find(size, 1, true) then
                 return index, size
             end
@@ -70,8 +69,8 @@ end
 
 local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
     if rRoll.sType == "damage" then
-        local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags);
-        local tWeapSizeEffects, nWeapSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "ESIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags);
+        local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags)
+        local tWeapSizeEffects, nWeapSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "ESIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags)
         if nSizeEffectCount > 0 or nWeapSizeEffectCount > 0 then
             local sizeChange = 0
             for _,effect in pairs(tSizeEffects) do

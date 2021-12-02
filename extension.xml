@@ -18,6 +18,8 @@
 	
 	<base>
 		<!-- Scripts -->
-		<script name="SizeChanges" file="scripts/size_changes.lua" />
+		<script name="SizeChangeData" file="scripts/size_changes_data.lua" />
+		<script name="SizeChangeDamage" file="scripts/size_changes_damage.lua" />
+		<script name="SizeChangeSkill" file="scripts/size_changes_skill.lua" />
 	</base>
 </root>
