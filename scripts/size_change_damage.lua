@@ -59,7 +59,7 @@ end
 local function getSourceSize(rSource)
     local type = DB.getValue(DB.findNode(rSource.sCTNode), "type", ""):lower()
     if type ~= "" then
-        for index,size in ipairs(SizeChangeData.smallSizes) do
+        for index,size in ipairs(SizeChangeData.sizes) do
             if type:find(size, 1, true) then
                 return index, size
             end
