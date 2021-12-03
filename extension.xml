@@ -17,6 +17,9 @@
 	<announcement text="https://github.com/SoxMax/FG-Size-Changes \r Size Changes v1.0.0 \r Automation for size increases and decreases" font="emotefont" />
 	
 	<base>
+		<!-- Strings -->
+		<string name="option_label_RESIZETOKEN">Update Space on Size Change</string>
+
 		<!-- Scripts -->
 		<script name="SizeChangeData" file="scripts/size_change_data.lua" />
 
@@ -24,5 +27,7 @@
 		<script name="SizeChangeDamage" file="scripts/size_change_damage.lua" />
 		<script name="SizeChangeDefense" file="scripts/size_change_defense.lua" />
 		<script name="SizeChangeSkill" file="scripts/size_change_skill.lua" />
+		
+		<script name="SizeChangeSpace" file="scripts/size_change_space.lua" />
 	</base>
 </root>
