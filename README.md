@@ -1,7 +1,7 @@
 # FG-Size-Changes
 Extension for Fantasy Grounds' Pathfinder ruleset that adds a effects for manipulating a character's size.
 
-**SIZE** effect will modify a player's attack, ac, cmd, cmb, fly skill, stealth skill and damage dice on weapons.
+**SIZE** effect will modify a player's attack, ac, cmd, cmb, fly skill, stealth skill and damage dice on weapons.  
 **ESIZE** will modify a player's damage dice on weapons.
 
 The rules for this can be found here:   
