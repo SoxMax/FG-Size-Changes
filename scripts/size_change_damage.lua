@@ -76,21 +76,21 @@ local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
                     diceString = diceCount .. dice[1]
                 end
                 diceString = transformSpecialDice(diceString)
-                local sizeIndex = SizeChangeCommon.getActorSize(rSource)
+                local sizeIndex = ActorManager35E.getSize(rSource)
                 local progressionIndex = nil
                 for i = 1, math.abs(sizeChange), 1 do
                     if progressionIndex == nil then
                         progressionIndex = findDiceProgressionIndex(diceString)
                     end
                     if sizeChange > 0 then
-                        if progressionIndex < 6 or sizeIndex < 5 then
+                        if progressionIndex < 6 or sizeIndex < 0 then
                             progressionIndex = progressionIndex + 1
                         else
                             progressionIndex = progressionIndex + 2
                         end
                         sizeIndex = sizeIndex + 1
                     else
-                        if progressionIndex <= 6 or sizeIndex <= 5 then
+                        if progressionIndex <= 6 or sizeIndex <= 0 then
                             progressionIndex = progressionIndex - 1
                         else
                             progressionIndex = progressionIndex - 2

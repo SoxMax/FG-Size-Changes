@@ -1,5 +1,3 @@
-local sizeCombatModifiers = {8, 4, 2, 1, 0, -1, -2, -4, -8}
-
 local function applySizeEffectsToModRoll(rSource, rTarget, rRoll)
     if rSource and rRoll.sType ~= "grapple" then
         local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, {"melee", "ranged"}, nil, false, rRoll.tags)
@@ -9,15 +7,15 @@ local function applySizeEffectsToModRoll(rSource, rTarget, rRoll)
                 sizeChange = sizeChange + effect.mod
             end
             if sizeChange ~= 0 then
-                local sizeIndex = SizeChangeCommon.getActorSize(rSource)
-                local skillChange = math.abs(sizeCombatModifiers[sizeIndex] - sizeCombatModifiers[sizeIndex + sizeChange])
+                local sizeIndex = ActorManager35E.getSize(rSource)
+                local effectBonus = math.abs(SizeChangeData.sizeCombatModifiers[sizeIndex] - SizeChangeData.sizeCombatModifiers[sizeIndex + sizeChange])
                 if sizeChange > 0 then
-                    skillChange = -skillChange
+                    effectBonus = -effectBonus
                 end
-                rRoll.nMod = rRoll.nMod + skillChange
-                local sMod = StringManager.convertDiceToString({}, skillChange, true);
+                rRoll.nMod = rRoll.nMod + effectBonus
+                local sMod = StringManager.convertDiceToString({}, effectBonus, true);
                 if sMod ~= "" then
-                    rRoll.sDesc = rRoll.sDesc .. " " .. "[SIZE " .. skillChange .. "]"
+                    rRoll.sDesc = rRoll.sDesc .. " " .. "[SIZE " .. effectBonus .. "]"
                 end
             end
         end

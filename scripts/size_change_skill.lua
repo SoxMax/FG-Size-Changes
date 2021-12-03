@@ -1,5 +1,3 @@
-local sizeSkillModifiers = {8, 6, 4, 2, 0, -2, -4, -6, -8}
-
 local function applySizeEffectsToModRoll(rSource, rTarget, rRoll)
     if rSource then
 		-- Determine skill used
@@ -17,9 +15,9 @@ local function applySizeEffectsToModRoll(rSource, rTarget, rRoll)
                     sizeChange = sizeChange + effect.mod
                 end
                 if sizeChange ~= 0 then
-                    local sizeIndex = SizeChangeCommon.getActorSize(rSource)
-                    local skillChange = math.abs(sizeSkillModifiers[sizeIndex] - sizeSkillModifiers[sizeIndex + sizeChange])
-                    if sizeChange > 0 then
+                    local sizeIndex = ActorManager35E.getSize(rSource)
+                    local skillChange = math.abs(SizeChangeData.sizeSkillModifiers[sizeIndex] - SizeChangeData.sizeSkillModifiers[sizeIndex + sizeChange])
+                    if sizeChange < 0 then
                         skillChange = -skillChange
                     end
                     if sSkillLower == "stealth" then

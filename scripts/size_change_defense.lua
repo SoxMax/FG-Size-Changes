@@ -1,7 +1,4 @@
-local sizeCombatModifiers = {8, 4, 2, 1, 0, -1, -2, -4, -8}
-
 function getSizeEffectsBonusForDefender(rDefender, rRoll)
-    -- Debug.chat(rDefender, rRoll)
     if rDefender and rRoll.sType ~= "grapple" then
         local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rDefender, "SIZE", true, {"melee", "ranged"}, nil, false, rRoll.tags)
         if nSizeEffectCount > 0 then
@@ -10,12 +7,12 @@ function getSizeEffectsBonusForDefender(rDefender, rRoll)
                 sizeChange = sizeChange + effect.mod
             end
             if sizeChange ~= 0 then
-                local sizeIndex = SizeChangeCommon.getActorSize(rDefender)
-                local skillChange = math.abs(sizeCombatModifiers[sizeIndex] - sizeCombatModifiers[sizeIndex + sizeChange])
+                local sizeIndex = ActorManager35E.getSize(rDefender)
+                local effectBonus = math.abs(SizeChangeData.sizeCombatModifiers[sizeIndex] - SizeChangeData.sizeCombatModifiers[sizeIndex + sizeChange])
                 if sizeChange > 0 then
-                    skillChange = -skillChange
+                    effectBonus = -effectBonus
                 end
-                return skillChange
+                return effectBonus
             end
         end
 	end
@@ -25,7 +22,6 @@ end
 local getDefenseValue = nil
 function getDefenseValueExtended(rAttacker, rDefender, rRoll, ...)
     local nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus, nMissChance = getDefenseValue(rAttacker, rDefender, rRoll, ...)
-    Debug.chat(nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus, nMissChance)
     nDefEffectsBonus = nDefEffectsBonus + getSizeEffectsBonusForDefender(rDefender, rRoll)
     return nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus, nMissChance
 end

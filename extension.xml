@@ -18,7 +18,8 @@
 	
 	<base>
 		<!-- Scripts -->
-		<script name="SizeChangeCommon" file="scripts/size_change_common.lua" />
+		<script name="SizeChangeData" file="scripts/size_change_data.lua" />
+
 		<script name="SizeChangeAttack" file="scripts/size_change_attack.lua" />
 		<script name="SizeChangeDamage" file="scripts/size_change_damage.lua" />
 		<script name="SizeChangeDefense" file="scripts/size_change_defense.lua" />
