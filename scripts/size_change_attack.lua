@@ -31,7 +31,7 @@ local function modAttackExtended(rSource, rTarget, rRoll, ...)
 end
 
 function onInit()
-    modSkill = ActionSkill.modAttack
-    ActionDamage.modAttack = modAttackExtended
-	ActionsManager.registerModHandler("attack", modAttackExtended);
+    modAttack = ActionAttack.modAttack
+    ActionAttack.modAttack = modAttackExtended
+	ActionsManager.registerModHandler("attack", modAttackExtended)
 end
