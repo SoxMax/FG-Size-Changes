@@ -1,47 +1,41 @@
+local sizeSkillModifiers = {8, 6, 4, 2, 0, -2, -4, -6, -8}
 
-local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
-    Debug.chat(rRoll)
-
+local function applySizeEffectsToModRoll(rSource, rTarget, rRoll)
     if rSource then
-		local bEffects = false;
-
 		-- Determine skill used
 		local sSkillLower = "";
 		local sSkill = string.match(rRoll.sDesc, "%[SKILL%] ([^[]+)");
 		if sSkill then
 			sSkillLower = string.lower(StringManager.trim(sSkill));
 		end
-
+        -- Check if this is a skill affected by size
         if sSkillLower == "fly" or sSkillLower == "stealth" then
-            Debug.chat("fly or stealth skill")
-            local aSkillFilter = { sSkillLower }
-            Debug.chat(EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, aSkillFilter, rTarget, false, rRoll.tags))
-            Debug.chat(EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, nil, rTarget, false, rRoll.tags))
-
-            -- If effects, then add them
-            if bEffects then
-                for _,vDie in ipairs(aAddDice) do
-                    if vDie:sub(1,1) == "-" then
-                        table.insert(rRoll.aDice, "-p" .. vDie:sub(3));
-                    else
-                        table.insert(rRoll.aDice, "p" .. vDie:sub(2));
+            local aSkillFilter = { "melee", "ranged" }
+            local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, aSkillFilter, nil, false, rRoll.tags)
+            if nSizeEffectCount > 0 then
+                local sizeChange = 0
+                for _,effect in pairs(tSizeEffects) do
+                    sizeChange = sizeChange + effect.mod
+                end
+                if sizeChange ~= 0 then
+                    local sizeIndex = SizeChangeCommon.getActorSize(rSource)
+                    local skillChange = math.abs(sizeSkillModifiers[sizeIndex] - sizeSkillModifiers[sizeIndex + sizeChange])
+                    if sizeChange > 0 then
+                        skillChange = -skillChange
+                    end
+                    if sSkillLower == "stealth" then
+                        skillChange = skillChange * 2
+                    end
+                    rRoll.nMod = rRoll.nMod + skillChange
+                    local sMod = StringManager.convertDiceToString({}, skillChange, true);
+                    if sMod ~= "" then
+                        rRoll.sDesc = rRoll.sDesc .. " " .. "[SIZE " .. skillChange .. "]"
                     end
                 end
-                rRoll.nMod = rRoll.nMod + nAddMod;
-
-                local sEffects = "";
-                local sMod = StringManager.convertDiceToString(aAddDice, nAddMod, true);
-                if sMod ~= "" then
-                    sEffects = "[" .. Interface.getString("effects_tag") .. " " .. sMod .. "]";
-                else
-                    sEffects = "[" .. Interface.getString("effects_tag") .. "]";
-                end
-                rRoll.sDesc = rRoll.sDesc .. " " .. sEffects;
             end
         end
 	end
 end
-
 
 local modSkill = nil
 local function modSkillExtended(rSource, rTarget, rRoll, ...)
@@ -49,8 +43,8 @@ local function modSkillExtended(rSource, rTarget, rRoll, ...)
     applySizeEffectsToModRoll(rSource, rTarget, rRoll)
 end
 
-
 function onInit()
     modSkill = ActionSkill.modSkill
     ActionDamage.modSkill = modSkillExtended
+	ActionsManager.registerModHandler("skill", modSkillExtended);
 end
