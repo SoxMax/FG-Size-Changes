@@ -1,6 +1,6 @@
 sizes = {"fine", "diminutive", "tiny", "small", "medium", "large", "huge", "gargantuan", "colossal"}
 
-local function getActorSize(rSource)
+function getActorSize(rSource)
     local type = DB.getValue(DB.findNode(rSource.sCTNode), "type", ""):lower()
     if type ~= "" then
         for index,size in ipairs(sizes) do
