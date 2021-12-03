@@ -1,3 +1,4 @@
+-- 3.5/PF modifiers to ATK & AC based on size
 sizeCombatModifiers = {
     [-4]=8,
     [-3]=4,
@@ -10,6 +11,20 @@ sizeCombatModifiers = {
     [4]=-8
 }
 
+-- 3.5 Grapple mods based on size
+sizeGrappleModifiers = {
+    [-4]=16,
+    [-3]=12,
+    [-2]=8,
+    [-1]=4,
+    [0]=0,
+    [1]=4,
+    [2]=8,
+    [3]=12,
+    [4]=16
+}
+
+-- 3.5/PF modifiers to skills based on size (stealth & hide are twice as affected)
 sizeSkillModifiers = {
     [-4]=8,
     [-3]=6,

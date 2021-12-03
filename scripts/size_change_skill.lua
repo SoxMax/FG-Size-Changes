@@ -16,17 +16,17 @@ local function applySizeEffectsToModRoll(rSource, rTarget, rRoll)
                 end
                 if sizeChange ~= 0 then
                     local sizeIndex = ActorManager35E.getSize(rSource)
-                    local skillChange = math.abs(SizeChangeData.sizeSkillModifiers[sizeIndex] - SizeChangeData.sizeSkillModifiers[sizeIndex + sizeChange])
+                    local effectBonus = math.abs(SizeChangeData.sizeSkillModifiers[sizeIndex] - SizeChangeData.sizeSkillModifiers[sizeIndex + sizeChange])
                     if sizeChange < 0 then
-                        skillChange = -skillChange
+                        effectBonus = -effectBonus
                     end
                     if sSkillLower == "stealth" or sSkillLower == "hide" then
-                        skillChange = skillChange * 2
+                        effectBonus = effectBonus * 2
                     end
-                    rRoll.nMod = rRoll.nMod + skillChange
-                    local sMod = StringManager.convertDiceToString({}, skillChange, true);
+                    rRoll.nMod = rRoll.nMod + effectBonus
+                    local sMod = StringManager.convertDiceToString({}, effectBonus, true);
                     if sMod ~= "" then
-                        rRoll.sDesc = rRoll.sDesc .. " " .. "[SIZE " .. skillChange .. "]"
+                        rRoll.sDesc = rRoll.sDesc .. " " .. "[SIZE " .. sMod .. "]"
                     end
                 end
             end
