@@ -1,12 +1,12 @@
 # FG-Size-Changes
-Extension for Fantasy Grounds' Pathfinder ruleset that adds a effects for manipulating a character's size.
+Extension for Fantasy Grounds'  3.5 and Pathfinder rulesets that adds a effects for manipulating a character's size.
 
 **SIZE** effect will modify a player's attack, ac, cmd, cmb, fly skill, stealth skill and damage dice on weapons.  
 **ESIZE** will modify a player's damage dice on weapons.
 
-The rules for this can be found here:   
-https://www.d20pfsrd.com/gamemastering/combat/space-reach-threatened-area-templates?/#Creature_Sizes  
-https://paizo.com/paizo/faq/v5748nruor1fm#v5748eaic9t3f
+The 3.5 rules for size changes: http://www.d20srd.org/srd/combat/movementPositionAndDistance.htm#bigandLittleCreaturesInCombat  
+The Pathfinder rules for size changes: https://www.d20pfsrd.com/gamemastering/combat/space-reach-threatened-area-templates?/#Creature_Sizes  
+I'm using Paizo's FAQ for damage for both rulesets: https://paizo.com/paizo/faq/v5748nruor1fm#v5748eaic9t3f
 
 | Modifier | Value | Descriptors      | Notes                 |
 | -------- |:------| :----------------|:----------------------|
