@@ -10,8 +10,7 @@ local function applySizeEffectsToModRoll(rSource, rTarget, rRoll)
 		end
         -- Check if this is a skill affected by size
         if sSkillLower == "fly" or sSkillLower == "stealth" then
-            local aSkillFilter = { "melee", "ranged" }
-            local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, aSkillFilter, nil, false, rRoll.tags)
+            local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, {"melee", "ranged"}, nil, false, rRoll.tags)
             if nSizeEffectCount > 0 then
                 local sizeChange = 0
                 for _,effect in pairs(tSizeEffects) do
