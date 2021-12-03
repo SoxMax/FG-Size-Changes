@@ -1,5 +1,5 @@
 # FG-Size-Changes
-Extension for Fantasy Grounds' Pathfinder ruleset that adds a effects for manipulating a character's size. Currenly only affects the damage a character deals.
+Extension for Fantasy Grounds' Pathfinder ruleset that adds a effects for manipulating a character's size. Currenly only affects the damage a character deals as well as their skills (Fly and Stealth).
 
 | Modifier | Value | Descriptors      | Notes                 |
 | -------- |:------| :----------------|:----------------------|
