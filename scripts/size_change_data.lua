@@ -50,6 +50,7 @@ sizeSpace = {
     [4]=30
 }
 
+-- 3.5/PF "Tall" reach based on size, FG doesn't support sizes below 5, so set to 0
 sizeTallReach = {
     [-4]=0,
     [-3]=0,
@@ -62,6 +63,7 @@ sizeTallReach = {
     [4]=30
 }
 
+-- 3.5/PF "Long" reach based on size, FG doesn't support sizes below 5, so set to 0
 sizeLongReach = {
     [-4]=0,
     [-3]=0,
