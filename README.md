@@ -1,7 +1,7 @@
 # FG-Size-Changes
 Extension for Fantasy Grounds'  3.5 and Pathfinder rulesets that adds a effects for manipulating a character's size.
 
-**SIZE** effect will modify a player's attack, ac, cmd, cmb, fly skill, stealth skill and damage dice on weapons.  
+**SIZE** effect will modify attack, ac, cmd, cmb, fly skill, stealth skill and damage dice on weapons. Additionally it will modify the Space the occupied on the battle grid, and optionally the Reach using a best guess.  
 **ESIZE** will modify a player's damage dice on weapons.
 
 The 3.5 rules for size changes: http://www.d20srd.org/srd/combat/movementPositionAndDistance.htm#bigandLittleCreaturesInCombat  
@@ -19,7 +19,7 @@ I'm using Paizo's FAQ on damage dice changes for both rulesets: https://paizo.co
 **[range]** = melee, ranged
 
 ## Examples
-- Enlarge Person; SIZE: 1 size, melee
-- Reduce Person; SIZE: -1 size, melee
+- Enlarge Person; SIZE: 1 size, melee; STR: 2 size, DEX: -2 size
+- Reduce Person; SIZE: -1 size, melee; STR: -2 size, DEX: 2 size
 - Lead Blades; ESIZE: 1 size, melee
 - Gravity Bow; ESIZE: 1 size, ranged
