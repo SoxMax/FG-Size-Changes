@@ -13,10 +13,10 @@ sizeCombatModifiers = {
 
 -- 3.5 Grapple mods based on size
 sizeGrappleModifiers = {
-    [-4]=16,
-    [-3]=12,
-    [-2]=8,
-    [-1]=4,
+    [-4]=-16,
+    [-3]=-12,
+    [-2]=-8,
+    [-1]=-4,
     [0]=0,
     [1]=4,
     [2]=8,
