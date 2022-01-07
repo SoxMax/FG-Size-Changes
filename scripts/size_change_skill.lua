@@ -17,7 +17,7 @@ local function applySizeEffectsToModRoll(rSource, rTarget, rRoll)
                 if sizeChange ~= 0 then
                     local sizeIndex = ActorManager35E.getSize(rSource)
                     local effectBonus = math.abs(SizeChangeData.sizeSkillModifiers[sizeIndex] - SizeChangeData.sizeSkillModifiers[sizeIndex + sizeChange])
-                    if sizeChange < 0 then
+                    if sizeChange > 0 then
                         effectBonus = -effectBonus
                     end
                     if sSkillLower == "stealth" or sSkillLower == "hide" then
