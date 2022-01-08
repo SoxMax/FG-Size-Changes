@@ -1,5 +1,6 @@
 function getSizeEffectsBonusForDefender(rDefender, rRoll)
-    if rDefender and rRoll.sType ~= "grapple" then
+    local isGrapple = rRoll.sType == "grapple"
+    if rDefender and (not isGrapple or DataCommon.isPFRPG()) then
         local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rDefender, "SIZE", true, {"melee", "ranged"}, nil, false, rRoll.tags)
         if nSizeEffectCount > 0 then
             local sizeChange = 0
@@ -9,7 +10,9 @@ function getSizeEffectsBonusForDefender(rDefender, rRoll)
             if sizeChange ~= 0 then
                 local sizeIndex = ActorManager35E.getSize(rDefender)
                 local effectBonus = math.abs(SizeChangeData.sizeCombatModifiers[sizeIndex] - SizeChangeData.sizeCombatModifiers[sizeIndex + sizeChange])
-                if sizeChange > 0 then
+                if isGrapple and sizeChange < 0 then
+                    effectBonus = -effectBonus
+                elseif not isGrapple and sizeChange > 0 then
                     effectBonus = -effectBonus
                 end
                 return effectBonus
