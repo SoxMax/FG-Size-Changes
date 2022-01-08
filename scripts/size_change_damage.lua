@@ -107,14 +107,14 @@ local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
 end
 
 
-local applyDmgEffectsToModRoll = nil
-local function applyDmgEffectsToModRollExtended(rRoll, rSource, rTarget, ...)
+local applyAbilityEffectsToModRoll = nil
+local function applyAbilityEffectsToModRollExtended(rRoll, rSource, rTarget, ...)
     applySizeEffectsToModRoll(rRoll, rSource, rTarget)
-    applyDmgEffectsToModRoll(rRoll, rSource, rTarget, ...)
+    applyAbilityEffectsToModRoll(rRoll, rSource, rTarget, ...)
 end
 
 
 function onInit()
-    applyDmgEffectsToModRoll = ActionDamage.applyDmgEffectsToModRoll
-    ActionDamage.applyDmgEffectsToModRoll = applyDmgEffectsToModRollExtended
+    applyAbilityEffectsToModRoll = ActionDamage.applyAbilityEffectsToModRoll
+    ActionDamage.applyAbilityEffectsToModRoll = applyAbilityEffectsToModRollExtended
 end
