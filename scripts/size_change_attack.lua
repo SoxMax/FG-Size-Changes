@@ -22,8 +22,20 @@ local function applySizeEffectsToAttackModRoll(rSource, rTarget, rRoll)
 	end
 end
 
+local function systemSpecificGrappleBonus(sizeIndex, sizeChange)
+    local multiplier = 1
+    if sizeChange < 0 then
+        multiplier = -1
+    end
+    if DataCommon.isPFRPG() then
+        return multiplier * math.abs(SizeChangeData.sizeCombatModifiers[sizeIndex] - SizeChangeData.sizeCombatModifiers[sizeIndex + sizeChange])
+    else
+        return multiplier * math.abs(SizeChangeData.sizeGrappleModifiers[sizeIndex] - SizeChangeData.sizeGrappleModifiers[sizeIndex + sizeChange])
+    end
+end
+
 local function applySizeEffectsToGrappleModRoll(rSource, rTarget, rRoll)
-    if rSource and rRoll.sType == "grapple" and not DataCommon.isPFRPG() then
+    if rSource and rRoll.sType == "grapple" then
         local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, {"melee", "ranged"}, nil, false, rRoll.tags)
         if nSizeEffectCount > 0 then
             local sizeChange = 0
@@ -32,10 +44,7 @@ local function applySizeEffectsToGrappleModRoll(rSource, rTarget, rRoll)
             end
             if sizeChange ~= 0 then
                 local sizeIndex = ActorManager35E.getSize(rSource)
-                local effectBonus = math.abs(SizeChangeData.sizeGrappleModifiers[sizeIndex] - SizeChangeData.sizeGrappleModifiers[sizeIndex + sizeChange])
-                if sizeChange < 0 then
-                    effectBonus = -effectBonus
-                end
+                local effectBonus = systemSpecificGrappleBonus(sizeIndex, sizeChange)
                 rRoll.nMod = rRoll.nMod + effectBonus
                 local sMod = StringManager.convertDiceToString({}, effectBonus, true);
                 if sMod ~= "" then
