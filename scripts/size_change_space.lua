@@ -115,23 +115,7 @@ local function effectNodeContainsEffect(nodeEffect, sEffect, rTarget, bTargetedO
                 end
             end
         end
-        
-        -- If matched, then remove one-off effects
-        if nMatch > 0 then
-            if nActive == 2 then
-                DB.setValue(nodeEffect, "isactive", "number", 1)
-            else
-                bMatch = true
-                local sApply = DB.getValue(nodeEffect, "apply", "")
-                if sApply == "action" then
-                    EffectManager.notifyExpire(nodeEffect, 0)
-                elseif sApply == "roll" then
-                    EffectManager.notifyExpire(nodeEffect, 0, true)
-                elseif sApply == "single" then
-                    EffectManager.notifyExpire(nodeEffect, nMatch, true)
-                end
-            end
-        end
+        bMatch = nMatch > 0
     end
 
 	return bMatch
