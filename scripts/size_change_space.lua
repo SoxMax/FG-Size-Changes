@@ -17,8 +17,7 @@ local function getTotalSize(rActor)
     return ActorManager35E.getSize(rActor) + sizeChange
 end
 
-local function updateActorSpace(rActor)
-    local size = getTotalSize(rActor)
+local function updateActorSpace(rActor, size)
     DB.setValue(DB.findNode(rActor.sCTNode), "space", "number", SizeChangeData.sizeSpace[size])
 end
 
@@ -31,42 +30,46 @@ local function hasBonusVsTrip(nodeNPC)
     return ((aSplitBABGrp[3]:find("vs. trip", 1, true) or aSplitBABGrp[3]:find("can't be tripped", 1, true)) ~= nil)
 end
 
-local function updateActorReach(rActor)
+local function updateActorReach(rActor, size)
     local sNodeType, nodeActor = ActorManager.getTypeAndNode(rActor)
-    local totalSize = getTotalSize(rActor)
     if sNodeType == "pc" then -- Is Player
-        DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[totalSize])
+        DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
     else -- Is NPC
         local baseSize = ActorManager35E.getSize(rActor)
         local nSpace, nReach = CombatManager2.getNPCSpaceReach(nodeActor)
         if nSpace < nReach then -- Extra tall
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[totalSize] * nReach / nSpace)
-        elseif totalSize <= 0 then
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[totalSize])
+            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size] * nReach / nSpace)
+        elseif size <= 0 then
+            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
         elseif baseSize > 0 then -- Large or bigger by default
             if nSpace == nReach then -- Tall
-                DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[totalSize])
+                DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
             elseif nSpace > nReach then -- Long
-                DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[totalSize])
+                DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[size])
             end
         elseif ActorManager35E.isCreatureType(rActor, "dragon,ooze") then
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[totalSize])
+            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[size])
         elseif ActorManager35E.isCreatureType(rActor, "elemental,fey,giant,humanoid,monstrous humanoid,outsider") then
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[totalSize])
+            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
         elseif hasBonusVsTrip(nodeActor) then
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[totalSize])
+            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[size])
         else
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[totalSize])
+            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
         end
     end
+end
+
+local function updateSpaceAndReach(rActor)
+    local size = getTotalSize(rActor)
+    updateActorSpace(rActor, size)
+    updateActorReach(rActor, size)
 end
 
 -- This function is called on alignment, size or race change in the Combat Tracker
 local function onCtTypeChanged(nodeType)
     if OptionsManager.isOption(resizeOptionName, "on") then
         local rActor = ActorManager.resolveActor(nodeType.getParent())
-        updateActorSpace(rActor)
-        updateActorReach(rActor)
+        updateSpaceAndReach(rActor)
     end
 end
 
@@ -76,7 +79,6 @@ local function effectNodeContainsEffect(nodeEffect, sEffect, rTarget, bTargetedO
 	end
 	local sLowerEffect = sEffect:lower()
 	
-	-- Iterate through each effect
 	local bMatch = false
     local nActive = DB.getValue(nodeEffect, "isactive", 0)
     if nActive ~= 0 then
@@ -112,7 +114,6 @@ local function effectNodeContainsEffect(nodeEffect, sEffect, rTarget, bTargetedO
                     nMatch = kEffectComp
                 end
             end
-            
         end
         
         -- If matched, then remove one-off effects
@@ -136,12 +137,19 @@ local function effectNodeContainsEffect(nodeEffect, sEffect, rTarget, bTargetedO
 	return bMatch
 end
 
--- This function is call whenever any effect in the Combat Tracker changes
-local function onEffectChanged(nodeEffect, bListchanged)
-    if OptionsManager.isOption(resizeOptionName, "on") and effectNodeContainsEffect(nodeEffect, "SIZE") then
-        local rActor = ActorManager.resolveActor(nodeEffect.getChild("..."))
-        updateActorSpace(rActor)
-        updateActorReach(rActor)
+-- This function is called whenever any effect in the Combat Tracker has it's label or isactive attribut updated
+local function onEffectChanged(nodeEffectField)
+    if OptionsManager.isOption(resizeOptionName, "on") and effectNodeContainsEffect(nodeEffectField.getParent(), "SIZE") then
+        local rActor = ActorManager.resolveActor(nodeEffectField.getChild("...."))
+        updateSpaceAndReach(rActor)
+    end
+end
+
+-- This function is called whenever any effects in the Combat Tracker are deleted
+local function onEffectDeleted(nodeEffects)
+    if OptionsManager.isOption(resizeOptionName, "on") then
+        local rActor = ActorManager.resolveActor(nodeEffects.getParent())
+        updateSpaceAndReach(rActor)
     end
 end
 
@@ -151,7 +159,10 @@ function onInit()
     if Session.IsHost then
         -- Check for type changes (size is in here)
         DB.addHandler(DB.getPath("combattracker.list.*.type"), "onUpdate", onCtTypeChanged)
-        -- Check for effect changes
-        DB.addHandler(DB.getPath("combattracker.list.*.effects.*"), "onChildUpdate", onEffectChanged)
+        -- Add handlers for updates on the label or active status (includes adding)
+        DB.addHandler(DB.getPath("combattracker.list.*.effects.*.label"), "onUpdate", onEffectChanged)
+        DB.addHandler(DB.getPath("combattracker.list.*.effects.*.isactive"), "onUpdate", onEffectChanged)
+        -- Check if removed effect changed size
+        DB.addHandler(DB.getPath("combattracker.list.*.effects"), "onChildDeleted", onEffectDeleted)
     end
 end
