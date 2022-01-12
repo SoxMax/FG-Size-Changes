@@ -19,6 +19,9 @@ end
 
 local function updateActorSpace(rActor, size)
     DB.setValue(DB.findNode(rActor.sCTNode), "space", "number", SizeChangeData.sizeSpace[size])
+    if OptionsManager.getOption("TASG") ~= "off" then
+        TokenManager.autoTokenScale(CombatManager.getTokenFromCT(rActor.sCTNode))
+    end
 end
 
 local function hasBonusVsTrip(nodeNPC)
