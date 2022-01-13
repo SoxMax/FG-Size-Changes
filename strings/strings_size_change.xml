@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<root>
+	<string name="option_label_RESIZETOKEN">Update Space/Reach on Size Change</string>
+    <string name="option_val_space_only">Space Only</string>
+	<string name="option_val_space_and_reach">Space + Reach</string>
+</root>

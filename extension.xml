@@ -18,8 +18,7 @@
 	
 	<base>
 		<!-- Strings -->
-		<string name="option_label_RESIZETOKEN">Update Space/Reach on Size Change</string>
-
+		<includefile source="strings/strings_size_change.xml" />
 		<!-- Scripts -->
 		<script name="SizeChangeData" file="scripts/size_change_data.lua" />
 

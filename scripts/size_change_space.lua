@@ -3,7 +3,7 @@ local resizeOptionName = "RESIZETOKEN"
 local function registerOptions()
     -- register option for toggling updates to token space on size change
     OptionsManager.registerOption2(resizeOptionName, false, "option_header_token", "option_label_RESIZETOKEN", "option_entry_cycler",
-            { labels = "option_val_on", values="on", baselabel = "option_val_off", baseval="off", default="off"})
+            { labels = "option_val_space_only|option_val_space_and_reach", values="space|space_and_reach", baselabel = "option_val_off", baseval="off", default="off"})
 end
 
 local function getTotalSize(rActor)
@@ -88,7 +88,9 @@ end
 local function updateSpaceAndReach(rActor)
     local size = getTotalSize(rActor)
     updateActorSpace(rActor, size)
-    updateActorReach(rActor, size)
+    if OptionsManager.isOption(resizeOptionName, "space_and_reach") then
+        updateActorReach(rActor, size)
+    end
 end
 
 -- This function is called on alignment, size or race change in the Combat Tracker
@@ -149,7 +151,7 @@ end
 
 -- This function is called whenever any effect in the Combat Tracker has it's label or isactive attribut updated
 local function onEffectChanged(nodeEffectField)
-    if OptionsManager.isOption(resizeOptionName, "on") and effectNodeContainsEffect(nodeEffectField.getParent(), "SIZE") then
+    if not OptionsManager.isOption(resizeOptionName, "off") and effectNodeContainsEffect(nodeEffectField.getParent(), "SIZE") then
         local rActor = ActorManager.resolveActor(nodeEffectField.getChild("...."))
         updateSpaceAndReach(rActor)
     end
@@ -157,7 +159,7 @@ end
 
 -- This function is called whenever any effects in the Combat Tracker are deleted
 local function onEffectDeleted(nodeEffects)
-    if OptionsManager.isOption(resizeOptionName, "on") then
+    if not OptionsManager.isOption(resizeOptionName, "off") then
         local rActor = ActorManager.resolveActor(nodeEffects.getParent())
         updateSpaceAndReach(rActor)
     end
