@@ -27,8 +27,20 @@ local function updateActorSpace(rActor, size)
     end
 end
 
-local function getPcReach(rActor, size)
-    Debug.chat(rActor)
+local function playerHasReachWeapon(rActor)
+    for _, weaponNode in pairs(DB.getChild(rActor.sCreatureNode, "weaponlist").getChildren()) do
+        if DB.getValue(weaponNode, "carried", 0) == 2 then
+            local weaponProperties = DB.getValue(weaponNode, "properties", "")
+            if weaponProperties ~= "" then
+                for _, property in pairs(StringManager.split(weaponProperties, ",", true)) do
+                    if property:lower() == "reach" then
+                        return true
+                    end
+                end
+            end
+        end
+    end
+    return false
 end
 
 local function hasBonusVsTrip(nodeNPC)
@@ -43,8 +55,11 @@ end
 local function updateActorReach(rActor, size)
     local sNodeType, nodeActor = ActorManager.getTypeAndNode(rActor)
     if sNodeType == "pc" then -- Is Player
-        getPcReach(rActor, size)
-        DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
+        local reachMultiplier = 1
+        if playerHasReachWeapon(rActor) then
+            reachMultiplier = 2
+        end
+        DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size] * reachMultiplier)
     else -- Is NPC
         local baseSize = ActorManager35E.getSize(rActor)
         local nSpace, nReach = CombatManager2.getNPCSpaceReach(nodeActor)
