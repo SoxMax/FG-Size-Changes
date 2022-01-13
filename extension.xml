@@ -2,7 +2,7 @@
 <root version="3.3">
 	<properties>
 		<name>Feature: Size Changes</name>
-		<version>1.2.0</version>
+		<version>1.3.0</version>
 		<author>SoxMax</author>
 		<description>Allows you to see what your stats are with effects applied</description>
 		<loadorder>402</loadorder>
@@ -14,7 +14,7 @@
 		</ruleset>
 	</properties>
 	
-	<announcement text="https://github.com/SoxMax/FG-Size-Changes \r Size Changes v1.2.0 \r Automation for size increases and decreases" font="emotefont" />
+	<announcement text="https://github.com/SoxMax/FG-Size-Changes \r Size Changes v1.3.0 \r Automation for size increases and decreases" font="emotefont" />
 	
 	<base>
 		<!-- Strings -->
