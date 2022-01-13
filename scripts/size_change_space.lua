@@ -20,8 +20,15 @@ end
 local function updateActorSpace(rActor, size)
     DB.setValue(DB.findNode(rActor.sCTNode), "space", "number", SizeChangeData.sizeSpace[size])
     if OptionsManager.getOption("TASG") ~= "off" then
-        TokenManager.autoTokenScale(CombatManager.getTokenFromCT(rActor.sCTNode))
+        local token = CombatManager.getTokenFromCT(rActor.sCTNode)
+        if token then
+            TokenManager.autoTokenScale(token)
+        end
     end
+end
+
+local function getPcReach(rActor, size)
+    Debug.chat(rActor)
 end
 
 local function hasBonusVsTrip(nodeNPC)
@@ -36,6 +43,7 @@ end
 local function updateActorReach(rActor, size)
     local sNodeType, nodeActor = ActorManager.getTypeAndNode(rActor)
     if sNodeType == "pc" then -- Is Player
+        getPcReach(rActor, size)
         DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
     else -- Is NPC
         local baseSize = ActorManager35E.getSize(rActor)
