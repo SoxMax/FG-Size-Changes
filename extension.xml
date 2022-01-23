@@ -28,5 +28,8 @@
 		<script name="SizeChangeSkill" file="scripts/size_change_skill.lua" />
 		
 		<script name="SizeChangeSpace" file="scripts/size_change_space.lua" />
+
+		<!-- Effect Builder -->
+		<includefile source="effect_builder/editor_loader.xml" />
 	</base>
 </root>
