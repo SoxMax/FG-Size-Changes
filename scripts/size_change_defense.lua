@@ -24,9 +24,10 @@ end
 
 local getDefenseValue = nil
 function getDefenseValueExtended(rAttacker, rDefender, rRoll, ...)
-    local nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus, nMissChance = getDefenseValue(rAttacker, rDefender, rRoll, ...)
+    local defenseVals = { getDefenseValue(rAttacker, rDefender, rRoll, ...) }
+    local nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus, nMissChance = unpack(defenseVals, 1, 4)
     nDefEffectsBonus = nDefEffectsBonus + getSizeEffectsBonusForDefender(rDefender, rRoll)
-    return nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus, nMissChance
+    return nDefenseVal, nAtkEffectsBonus, nDefEffectsBonus, nMissChance, unpack(defenseVals, 5)
 end
 
 function onInit()
