@@ -2,7 +2,7 @@
 <root version="3.3">
 	<properties>
 		<name>Feature: Size Changes</name>
-		<version>1.4.1</version>
+		<version>1.5.0</version>
 		<author>SoxMax</author>
 		<description>Adds effects for size changes and effective size changes in 3.5e/PFRPG</description>
 		<loadorder>402</loadorder>
@@ -14,7 +14,7 @@
 		</ruleset>
 	</properties>
 	
-	<announcement text="https://forge.fantasygrounds.com/shop/items/437/view \r Size Changes v1.4.1 \r Automation for size increases and decreases" font="emotefont" />
+	<announcement text="https://forge.fantasygrounds.com/shop/items/437/view \r Size Changes v1.5.0 \r Automation for size increases and decreases" font="emotefont" />
 	
 	<base>
 		<!-- Strings -->
