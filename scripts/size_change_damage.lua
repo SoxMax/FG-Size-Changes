@@ -9,15 +9,15 @@ local function transformSpecialDice(die)
     local newDie = die
     local dieCount, dieSides = dieSplit(die)
     if dieSides == 12 then
-        die = 2 * tonumber(dieCount) .. "d6"
+        newDie = 2 * tonumber(dieCount) .. "d6"
     elseif dieSides == 4 and dieCount > 1 then
         if dieCount % 2 == 0 then
-            die = dieCount / 2 .. "d8"
+            newDie = dieCount / 2 .. "d8"
         else
-            die = math.floor(dieCount / 2) + 1 .. "d6"
+            newDie = math.floor(dieCount / 2) + 1 .. "d6"
         end
     elseif dieSides == 10 and dieCount > 1 then
-        die = diceProgression[9 + (dieCount - 1) * 2]
+        newDie = diceProgression[9 + (dieCount - 1) * 2]
     end
     return newDie
 end
