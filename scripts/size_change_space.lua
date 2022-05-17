@@ -44,12 +44,14 @@ local function playerHasReachWeapon(rActor)
 end
 
 local function hasBonusVsTrip(nodeNPC)
-    local sBABGrp = DB.getValue(nodeNPC, "babgrp", "");
-    local aSplitBABGrp = StringManager.split(sBABGrp, "/", true);
-    if #aSplitBABGrp ~= 3 then
-        aSplitBABGrp = StringManager.split(sBABGrp, ";", true);
+    if DataCommon.isPFRPG() then
+        local sBABGrp = DB.getValue(nodeNPC, "babgrp", "");
+        local aSplitBABGrp = StringManager.split(sBABGrp, "/", true);
+        if #aSplitBABGrp ~= 3 then
+            aSplitBABGrp = StringManager.split(sBABGrp, ";", true);
+        end
+        return ((aSplitBABGrp[3]:find("vs. trip", 1, true) or aSplitBABGrp[3]:find("can't be tripped", 1, true)) ~= nil)
     end
-    return ((aSplitBABGrp[3]:find("vs. trip", 1, true) or aSplitBABGrp[3]:find("can't be tripped", 1, true)) ~= nil)
 end
 
 local function updateActorReach(rActor, size)
