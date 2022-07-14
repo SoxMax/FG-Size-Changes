@@ -64,7 +64,8 @@ local function updateActorReach(rActor, size)
         DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size] * reachMultiplier)
     else -- Is NPC
         local baseSize = ActorCommonManager.getCreatureSizeDnD3(rActor)
-        local nSpace, nReach = CombatManager2.getNPCSpaceReach(nodeActor)
+        local nSpace, nReach = ActorCommonManager.getSpaceReach(nodeActor)
+        Debug.chat(nSpace, nReach)
         if nSpace < nReach then -- Extra tall
             DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size] * nReach / nSpace)
         elseif size <= 0 then
