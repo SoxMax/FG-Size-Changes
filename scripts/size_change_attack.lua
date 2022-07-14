@@ -7,7 +7,7 @@ local function applySizeEffectsToAttackModRoll(rSource, rTarget, rRoll)
                 sizeChange = sizeChange + effect.mod
             end
             if sizeChange ~= 0 then
-                local sizeIndex = ActorManager35E.getSize(rSource)
+                local sizeIndex = ActorCommonManager.getCreatureSizeDnD3(rSource)
                 local effectBonus = math.abs(SizeChangeData.sizeCombatModifiers[sizeIndex] - SizeChangeData.sizeCombatModifiers[sizeIndex + sizeChange])
                 if sizeChange > 0 then
                     effectBonus = -effectBonus
@@ -43,7 +43,7 @@ local function applySizeEffectsToGrappleModRoll(rSource, rTarget, rRoll)
                 sizeChange = sizeChange + effect.mod
             end
             if sizeChange ~= 0 then
-                local sizeIndex = ActorManager35E.getSize(rSource)
+                local sizeIndex = ActorCommonManager.getCreatureSizeDnD3(rSource)
                 local effectBonus = systemSpecificGrappleBonus(sizeIndex, sizeChange)
                 rRoll.nMod = rRoll.nMod + effectBonus
                 local sMod = StringManager.convertDiceToString({}, effectBonus, true);

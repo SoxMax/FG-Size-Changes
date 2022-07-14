@@ -14,7 +14,7 @@ local function getTotalSize(rActor)
             sizeChange = sizeChange + effect.mod
         end
     end
-    return ActorManager35E.getSize(rActor) + sizeChange
+    return ActorCommonManager.getCreatureSizeDnD3(rActor) + sizeChange
 end
 
 local function updateActorSpace(rActor, size)
@@ -63,7 +63,7 @@ local function updateActorReach(rActor, size)
         end
         DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size] * reachMultiplier)
     else -- Is NPC
-        local baseSize = ActorManager35E.getSize(rActor)
+        local baseSize = ActorCommonManager.getCreatureSizeDnD3(rActor)
         local nSpace, nReach = CombatManager2.getNPCSpaceReach(nodeActor)
         if nSpace < nReach then -- Extra tall
             DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size] * nReach / nSpace)
@@ -75,9 +75,9 @@ local function updateActorReach(rActor, size)
             elseif nSpace > nReach then -- Long
                 DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[size])
             end
-        elseif ActorManager35E.isCreatureType(rActor, "dragon,ooze") then
+        elseif ActorCommonManager.isCreatureTypeDnD(rActor, "dragon,ooze") then
             DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[size])
-        elseif ActorManager35E.isCreatureType(rActor, "elemental,fey,giant,humanoid,monstrous humanoid,outsider") then
+        elseif ActorCommonManager.isCreatureTypeDnD(rActor, "elemental,fey,giant,humanoid,monstrous humanoid,outsider") then
             DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
         elseif hasBonusVsTrip(nodeActor) then
             DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[size])

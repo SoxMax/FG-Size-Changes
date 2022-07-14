@@ -15,7 +15,7 @@ local function applySizeEffectsToModRoll(rSource, rTarget, rRoll)
                     sizeChange = sizeChange + effect.mod
                 end
                 if sizeChange ~= 0 then
-                    local sizeIndex = ActorManager35E.getSize(rSource)
+                    local sizeIndex = ActorCommonManager.getCreatureSizeDnD3(rSource)
                     local effectBonus = math.abs(SizeChangeData.sizeSkillModifiers[sizeIndex] - SizeChangeData.sizeSkillModifiers[sizeIndex + sizeChange])
                     if sizeChange > 0 then
                         effectBonus = -effectBonus
