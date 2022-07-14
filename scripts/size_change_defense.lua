@@ -8,7 +8,7 @@ function getSizeEffectsBonusForDefender(rDefender, rRoll)
                 sizeChange = sizeChange + effect.mod
             end
             if sizeChange ~= 0 then
-                local sizeIndex = ActorManager35E.getSize(rDefender)
+                local sizeIndex = ActorCommonManager.getCreatureSizeDnD3(rDefender)
                 local effectBonus = math.abs(SizeChangeData.sizeCombatModifiers[sizeIndex] - SizeChangeData.sizeCombatModifiers[sizeIndex + sizeChange])
                 if isGrapple and sizeChange < 0 then
                     effectBonus = -effectBonus
