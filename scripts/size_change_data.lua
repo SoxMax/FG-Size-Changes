@@ -39,9 +39,9 @@ sizeSkillModifiers = {
 
 -- 3.5/PF space occupied based on size, FG doesn't support sizes below 5, so set to 0
 sizeSpace = {
-    [-4]=0,
-    [-3]=0,
-    [-2]=0,
+    [-4]=0.5,
+    [-3]=1,
+    [-2]=2.5,
     [-1]=5,
     [0]=5,
     [1]=10,
