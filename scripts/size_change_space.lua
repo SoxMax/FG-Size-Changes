@@ -7,36 +7,20 @@ local function registerOptions()
 end
 
 local function getTotalSize(rActor)
-    local sizeChange = 0
-    local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rActor, "SIZE", true, {"melee", "ranged"})
-    if nSizeEffectCount > 0 then
-        for _,effect in pairs(tSizeEffects) do
-            sizeChange = sizeChange + effect.mod
-        end
-    end
+    local sizeChange = EffectManager35E.getEffectsBonus(rActor, "SIZE", true, {"melee", "ranged"})
     return ActorCommonManager.getCreatureSizeDnD3(rActor) + sizeChange
 end
 
 local function getTotalReachBonus(rActor)
-    local reachBonus = 0
-    local tReachEffects, nReachEffectCount = EffectManager35E.getEffectsBonusByType(rActor, "ADDREACH", true)
-    if nReachEffectCount > 0 then
-        for _,effect in pairs(tReachEffects) do
-            reachBonus = reachBonus + effect.mod
-        end
-    end
-    return reachBonus
+    return EffectManager35E.getEffectsBonus(rActor, "REACH", true)
 end
 
-local function getStaticReachEffect(rActor)
+local function getStaticReachBonus(rActor)
     local reach = nil
-    local tReachEffects, nReachEffectCount = EffectManager35E.getEffectsBonusByType(rActor, "REACH")
-    Debug.chat(nReachEffectCount, tReachEffects)
-    if nReachEffectCount > 0 then
-        for _,effect in pairs(tReachEffects) do
-            if not reach or effect.mod > reach then
-                reach = effect.mod
-            end
+    local effects, effectsCount = EffectManager35E.getEffectsBonusByType(rActor, "SREACH")
+    if effectsCount > 0 then
+        for _,effect in pairs(effects) do
+            reach = math.max(effect.mod, reach or 0)
         end
     end
     return reach
@@ -113,13 +97,14 @@ local function getReachFromSize(rActor, size)
 end
 
 local function updateActorReach(rActor, size)
-    local staticReach = getStaticReachEffect(rActor)
+    local staticReach = getStaticReachBonus(rActor)
     if staticReach then
         DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", staticReach)
+    else
+        local sizeReach = getReachFromSize(rActor, size)
+        local reachBonus = getTotalReachBonus(rActor)
+        DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", sizeReach + reachBonus)
     end
-    local sizeReach = getReachFromSize(rActor, size)
-    local reachBonus = getTotalReachBonus(rActor)
-    DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", sizeReach + reachBonus)
 end
 
 local function updateSpaceAndReach(rActor)
@@ -188,7 +173,9 @@ end
 
 local function hasSizeEffectChanged(nodeEffectField)
     local nodeEffect = nodeEffectField.getParent()
-    return effectNodeContainsEffect(nodeEffect, "SIZE") or effectNodeContainsEffect(nodeEffect, "REACH")
+    return effectNodeContainsEffect(nodeEffect, "SIZE")
+      or effectNodeContainsEffect(nodeEffect, "REACH")
+      or effectNodeContainsEffect(nodeEffect, "SREACH")
 end
 
 -- This function is called whenever any effect in the Combat Tracker has it's label or isactive attribut updated
