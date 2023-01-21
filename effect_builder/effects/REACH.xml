@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<root>
+    <windowclass name="effect_REACH">
+        <script file="effect_builder/effects/scripts/REACH.lua" />
+		<margins control="0,0,0,2" />
+        <sheetdata>
+            <leftanchor_eb />
+
+            <number_eb_valueholder name="effect_modifier" />
+
+            <combobox_eb_bonus_type name="effect_bonus_type" />
+        </sheetdata>
+    </windowclass>
+    <script name="loader_REACH">
+        function onInit()
+            if ExtensionManagerSizeChanges.shouldLoadEffects() then
+                EditorManager.addEditor(
+                    "category_misc",
+                    {
+                        value="REACH",
+                        labelres="effect_reach",
+                        windowclass="effect_REACH"
+                    }
+                )
+                EditorManager.addEditor(
+                    "category_misc",
+                    {
+                        value="SREACH",
+                        labelres="effect_sreach",
+                        windowclass="effect_REACH"
+                    }
+                )
+            end
+        end
+    </script>
+</root>

@@ -7,14 +7,23 @@ local function registerOptions()
 end
 
 local function getTotalSize(rActor)
-    local sizeChange = 0
-    local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rActor, "SIZE", true, {"melee", "ranged"})
-    if nSizeEffectCount > 0 then
-        for _,effect in pairs(tSizeEffects) do
-            sizeChange = sizeChange + effect.mod
+    local sizeChange = EffectManager35E.getEffectsBonus(rActor, "SIZE", true, {"melee", "ranged"})
+    return ActorCommonManager.getCreatureSizeDnD3(rActor) + sizeChange
+end
+
+local function getTotalReachBonus(rActor)
+    return EffectManager35E.getEffectsBonus(rActor, "REACH", true)
+end
+
+local function getStaticReachBonus(rActor)
+    local reach = nil
+    local effects, effectsCount = EffectManager35E.getEffectsBonusByType(rActor, "SREACH")
+    if effectsCount > 0 then
+        for _,effect in pairs(effects) do
+            reach = math.max(effect.mod, reach or 0)
         end
     end
-    return ActorCommonManager.getCreatureSizeDnD3(rActor) + sizeChange
+    return reach
 end
 
 local function updateActorSpace(rActor, size)
@@ -54,37 +63,47 @@ local function hasBonusVsTrip(nodeNPC)
     end
 end
 
-local function updateActorReach(rActor, size)
+local function getReachFromSize(rActor, size)
     local sNodeType, nodeActor = ActorManager.getTypeAndNode(rActor)
     if sNodeType == "pc" then -- Is Player
         local reachMultiplier = 1
         if playerHasReachWeapon(rActor) then
             reachMultiplier = 2
         end
-        DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size] * reachMultiplier)
+        return SizeChangeData.sizeTallReach[size] * reachMultiplier
     else -- Is NPC
         local baseSize = ActorCommonManager.getCreatureSizeDnD3(rActor)
         local nSpace, nReach = ActorCommonManager.getSpaceReach(nodeActor)
-        Debug.chat(nSpace, nReach)
         if nSpace < nReach then -- Extra tall
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size] * nReach / nSpace)
+            return SizeChangeData.sizeTallReach[size] * nReach / nSpace
         elseif size <= 0 then
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
+            return SizeChangeData.sizeTallReach[size]
         elseif baseSize > 0 then -- Large or bigger by default
             if nSpace == nReach then -- Tall
-                DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
+                return SizeChangeData.sizeTallReach[size]
             elseif nSpace > nReach then -- Long
-                DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[size])
+                return SizeChangeData.sizeLongReach[size]
             end
         elseif ActorCommonManager.isCreatureTypeDnD(rActor, "dragon,ooze") then
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[size])
+            return SizeChangeData.sizeLongReach[size]
         elseif ActorCommonManager.isCreatureTypeDnD(rActor, "elemental,fey,giant,humanoid,monstrous humanoid,outsider") then
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
+            return SizeChangeData.sizeTallReach[size]
         elseif hasBonusVsTrip(nodeActor) then
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeLongReach[size])
+            return SizeChangeData.sizeLongReach[size]
         else
-            DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", SizeChangeData.sizeTallReach[size])
+            return SizeChangeData.sizeTallReach[size]
         end
+    end
+end
+
+local function updateActorReach(rActor, size)
+    local staticReach = getStaticReachBonus(rActor)
+    if staticReach then
+        DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", staticReach)
+    else
+        local sizeReach = getReachFromSize(rActor, size)
+        local reachBonus = getTotalReachBonus(rActor)
+        DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", sizeReach + reachBonus)
     end
 end
 
@@ -152,9 +171,16 @@ local function effectNodeContainsEffect(nodeEffect, sEffect, rTarget, bTargetedO
 	return bMatch
 end
 
+local function hasSizeEffectChanged(nodeEffectField)
+    local nodeEffect = nodeEffectField.getParent()
+    return effectNodeContainsEffect(nodeEffect, "SIZE")
+      or effectNodeContainsEffect(nodeEffect, "REACH")
+      or effectNodeContainsEffect(nodeEffect, "SREACH")
+end
+
 -- This function is called whenever any effect in the Combat Tracker has it's label or isactive attribut updated
 local function onEffectChanged(nodeEffectField)
-    if not OptionsManager.isOption(resizeOptionName, "off") and effectNodeContainsEffect(nodeEffectField.getParent(), "SIZE") then
+    if not OptionsManager.isOption(resizeOptionName, "off") and hasSizeEffectChanged(nodeEffectField) then
         local rActor = ActorManager.resolveActor(nodeEffectField.getChild("...."))
         updateSpaceAndReach(rActor)
     end
