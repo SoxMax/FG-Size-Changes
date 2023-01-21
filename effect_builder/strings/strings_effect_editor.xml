@@ -3,4 +3,6 @@
 <root>
     <string name="effect_size">Size Change</string>
     <string name="effect_esize">Effective Size Change</string>
+    <string name="effect_reach">Reach</string>
+    <string name="effect_sreach">Static Reach</string>
 </root>

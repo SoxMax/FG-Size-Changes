@@ -7,4 +7,5 @@
 
     <!-- Effect Editors -->
     <includefile source="effect_builder/effects/SIZE.xml" />
+    <includefile source="effect_builder/effects/REACH.xml" />
 </root>
