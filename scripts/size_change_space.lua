@@ -6,15 +6,6 @@ local function registerOptions()
             { labels = "option_val_space_only|option_val_space_and_reach", values="space|space_and_reach", baselabel = "option_val_off", baseval="off", default="off"})
 end
 
-local function getTotalSize(rActor)
-    local sizeChange = EffectManager35E.getEffectsBonus(rActor, "SIZE", true, {"melee", "ranged"})
-    return SizeManager.getOriginalCreatureSize(rActor) + sizeChange
-end
-
-local function getTotalReachBonus(rActor)
-    return EffectManager35E.getEffectsBonus(rActor, "REACH", true)
-end
-
 local function getStaticReachBonus(rActor)
     local reach = nil
     local effects, effectsCount = EffectManager35E.getEffectsBonusByType(rActor, "SREACH")
@@ -102,13 +93,13 @@ local function updateActorReach(rActor, size)
         DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", staticReach)
     else
         local sizeReach = getReachFromSize(rActor, size)
-        local reachBonus = getTotalReachBonus(rActor)
+        local reachBonus = EffectManager35E.getEffectsBonus(rActor, "REACH", true)
         DB.setValue(DB.findNode(rActor.sCTNode), "reach", "number", sizeReach + reachBonus)
     end
 end
 
 local function updateSpaceAndReach(rActor)
-    local size = getTotalSize(rActor)
+    local size = ActorCommonManager.getCreatureSizeDnD3(rActor)
     updateActorSpace(rActor, size)
     if OptionsManager.isOption(resizeOptionName, "space_and_reach") then
         updateActorReach(rActor, size)
