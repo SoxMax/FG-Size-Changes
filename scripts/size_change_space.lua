@@ -8,7 +8,7 @@ end
 
 local function getTotalSize(rActor)
     local sizeChange = EffectManager35E.getEffectsBonus(rActor, "SIZE", true, {"melee", "ranged"})
-    return ActorCommonManager.getCreatureSizeDnD3(rActor) + sizeChange
+    return SizeManager.getOriginalCreatureSize(rActor) + sizeChange
 end
 
 local function getTotalReachBonus(rActor)
@@ -72,7 +72,7 @@ local function getReachFromSize(rActor, size)
         end
         return SizeChangeData.sizeTallReach[size] * reachMultiplier
     else -- Is NPC
-        local baseSize = ActorCommonManager.getCreatureSizeDnD3(rActor)
+        local baseSize = SizeManager.getOriginalCreatureSize(rActor)
         local nSpace, nReach = ActorCommonManager.getSpaceReach(nodeActor)
         if nSpace < nReach then -- Extra tall
             return SizeChangeData.sizeTallReach[size] * nReach / nSpace
