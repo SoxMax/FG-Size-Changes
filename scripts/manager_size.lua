@@ -3,7 +3,6 @@ getOriginalCreatureSize = nil
 function getCreatureSize(rActor)
     local originalSize = getOriginalCreatureSize(rActor)
     local sizeChange = EffectManager35E.getEffectsBonus(rActor, "SIZE", true, {"melee", "ranged"})
-    Debug.chat(originalSize, sizeChange)
     return originalSize + sizeChange
 end
 
