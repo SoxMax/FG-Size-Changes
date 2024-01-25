@@ -76,7 +76,7 @@ local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
                     diceString = diceCount .. dice[1]
                 end
                 diceString = transformSpecialDice(diceString)
-                local sizeIndex = ActorCommonManager.getCreatureSizeDnD3(rSource)
+                local sizeIndex = SizeManager.getOriginalCreatureSize(rSource)
                 local progressionIndex = nil
                 for i = 1, math.abs(sizeChange), 1 do
                     if progressionIndex == nil then
