@@ -14,7 +14,7 @@
     </windowclass>
     <script name="loader_REACH">
         function onInit()
-            if ExtensionManagerSizeChanges.shouldLoadEffects() then
+            if Extension.isEffectBuilderRulesetPluginLoaded then
                 EditorManager.addEditor(
                     "category_misc",
                     {
