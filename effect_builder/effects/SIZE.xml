@@ -16,7 +16,7 @@
     </windowclass>
     <script name="loader_SIZE">
         function onInit()
-            if ExtensionManagerSizeChanges.shouldLoadEffects() then
+            if Extension.isEffectBuilderRulesetPluginLoaded then
                 EditorManager.addEditor(
                     "category_misc",
                     {

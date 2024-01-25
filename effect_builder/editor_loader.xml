@@ -2,8 +2,6 @@
 <root version="3.3">
     <!-- Strings -->
     <includefile source="effect_builder/strings/strings_effect_editor.xml" />
-    <!-- Scripts -->
-    <script name="ExtensionManagerSizeChanges" file="effect_builder/scripts/manager_extensions.lua" />
 
     <!-- Effect Editors -->
     <includefile source="effect_builder/effects/SIZE.xml" />
