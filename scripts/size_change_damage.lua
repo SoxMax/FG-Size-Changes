@@ -56,8 +56,20 @@ local function updateDiceArray(rRoll)
     rRoll.aDice = aDice
 end
 
+local function isWeaponOfNosizeType(rRoll)
+  if #(rRoll.clauses) > 0 then
+    local dmgtype = rRoll.clauses[1].dmgtype
+    for str in string.gmatch(dmgtype, "([^,]+)") do
+      if string.match(str, "^%s*(.-)%s*$") == "nosize" then
+        return true
+      end
+    end
+  end
+  return false
+end
+
 local function applySizeEffectsToModRoll(rRoll, rSource, rTarget)
-    if rRoll.sType == "damage" then
+    if rRoll.sType == "damage" and not isWeaponOfNosizeType(rRoll) then
         local tSizeEffects, nSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "SIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags)
         local tWeapSizeEffects, nWeapSizeEffectCount = EffectManager35E.getEffectsBonusByType(rSource, "ESIZE", true, rRoll.tAttackFilter, rTarget, false, rRoll.tags)
         if nSizeEffectCount > 0 or nWeapSizeEffectCount > 0 then
