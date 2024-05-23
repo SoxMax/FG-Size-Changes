@@ -28,7 +28,7 @@ local function updateActorSpace(rActor, size)
 end
 
 local function playerHasReachWeapon(rActor)
-    for _, weaponNode in pairs(DB.getChild(rActor.sCreatureNode, "weaponlist").getChildren()) do
+    for _, weaponNode in ipairs(DB.getChildList(DB.getChild(rActor.sCreatureNode, "weaponlist"))) do
         if DB.getValue(weaponNode, "carried", 0) == 2 then
             local weaponProperties = DB.getValue(weaponNode, "properties", "")
             if weaponProperties ~= "" then
