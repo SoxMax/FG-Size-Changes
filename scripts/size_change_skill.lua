@@ -42,6 +42,6 @@ end
 
 function onInit()
     modSkill = ActionSkill.modSkill
-    ActionDamage.modSkill = modSkillExtended
-	ActionsManager.registerModHandler("skill", modSkillExtended);
+    ActionSkill.modSkill = modSkillExtended
+    ActionsManager.registerModHandler("skill", modSkillExtended);
 end
