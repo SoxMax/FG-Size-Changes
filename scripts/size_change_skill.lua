@@ -42,6 +42,10 @@ end
 
 function onInit()
     modSkill = ActionSkill.modSkill
+    if ActionSkill2 then -- Remove after this MR is released: https://github.com/Kelrugem/Extended-automation-and-overlays/pull/32
+        modSkill = ActionSkill2.modSkill
+        ActionSkill2.modSkill = modSkillExtended
+    end
     ActionSkill.modSkill = modSkillExtended
     ActionsManager.registerModHandler("skill", modSkillExtended);
 end
